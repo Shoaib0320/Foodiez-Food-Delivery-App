@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restaurant's</title>
+    <link rel="shortcut icon" href="./images/favicon.png" type="image/x-icon">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/4876bfe495.js" crossorigin="anonymous"></script>
+    <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="navbar.css">
+    <style>
+            .card {
+                border: 2px solid #333; /* Dark border for modern look */
+                border-radius: 10px;       /* Rounded corners */
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 6px 20px rgba(0, 0, 0, 0.1); /* Soft shadow */
+                transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+                background: linear-gradient(135deg, #9fb5cb, #88a6bc); /* Modern gradient background */
+                }
+
+                .card:hover {
+                transform: scale(1.05); /* Slightly enlarge the card on hover */
+                box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2), 0 12px 30px rgba(0, 0, 0, 0.2); /* More shadow on hover */
+                }
+
+                .card-img-top {
+                border-top-left-radius: 10px; /* Smooth rounding on top */
+                border-top-right-radius: 10px;
+                max-height: 200px;            /* Control the height of the image */
+                object-fit: cover;            /* Ensure image covers the area without stretching */
+                }
+
+                .card-color {
+                background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent for modern feel */
+                padding: 15px;
+                }
+
+                .card-title {
+                color: #333;
+                font-size: 1.5rem;
+                font-weight: bold;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+                text-align: center;
+                }
+
+                .card-body h6 {
+                color: #777;
+                font-size: 1rem;
+                text-align: center;
+                }
+
+                .btn {
+                font-weight: bold;
+                text-transform: uppercase;
+                }
+
+                /* Adding hover effect for buttons */
+                .edit-btn {
+                border-color: #4CAF50; /* Green outline for modern look */
+                color: #4CAF50;
+                margin-right: 5px;
+                }
+
+                .edit-btn:hover {
+                background-color: #4CAF50; /* Green background on hover */
+                color: white;
+                }
+
+                .delete-btn {
+                background-color: #FF6347; /* Modern coral color for delete button */
+                }
+
+                .delete-btn:hover {
+                background-color: #D62828; /* Darker coral red on hover */
+                }
+
+
+
+    </style>
+</head>
+<body>
+    <div>
+        <nav>
+            <div class="navbar">
+              <i class='bx bx-menu'></i>
+              <div class="logo"><a href="#">Foodiez</a></div>
+              <div class="nav-links">
+                <div class="sidebar-logo">
+                  <span class="logo-name">Foodiez</span>
+                  <i class='bx bx-x' ></i>
+                </div>
+                <ul class="links">
+                  <li><a aria-current="page" href="./dashboard.html">DashBoard</a></li>
+                  <li><a href="./restaurants.html">Restaurants</a></li>
+                  <li><a href="./add-dishes.html">Dishes</a></li>
+                  <li><a href="./orders.html">Orders</a></li>
+
+                  <div id="navbar-buttons" class="d-flex align-items-center">
+                    <button id="logoutBtn" class="btn btn-primary px-3 py-2">Log Out</button>
+                  </div>
+
+                    <ul class="navbar-nav flex-row"></ul>
+                        <li class="nav-item me-3 me-lg-1">
+                        <a class="nav-link d-sm-flex align-items-sm-center" href="#">
+                            <img
+                            src=""
+                            id="user-img"
+                            class="rounded-circle"
+                            alt=""
+                            loading="lazy"
+                            width="40px"
+                            />
+                            <strong class="d-none d-sm-block ms-1" id="user-name"></strong>
+                        </a>
+                        </li>
+              </div>
+              <div class="search-box d-flex justify-content-between">
+                <i class='bx bx-search'></i>
+                <div class="input-box">
+                  <input id="searchInput" type="text" placeholder="Search...">
+                </div>        
+              </div>
+            </div>
+          </nav>
+
+          <br>
+          <br>
+          <br><br>
+
+        
+        <div class="row px-2 py-4 m-2">
+            <div class="d-flex justify-content-between align-items-center">
+                <h2>Restaurants</h2>
+
+
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#restaurantModal">
+                    Add new restaurant <i class="fa-solid fa-plus"></i>
+                </button>
+                <div class="modal fade" id="restaurantModal" tabindex="-1" aria-labelledby="restaurantModal"
+                    aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="restaurantModal">Add new restaurant</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="mb-3">
+                                    <label for="exampleFormControlInput1" class="form-label">Restaurant name</label>
+                                    <input type="text" class="form-control" id="restaurant-name"
+                                        placeholder="Enter name">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="exampleFormControlTextarea1" class="form-label">Restaurant
+                                        address</label>
+                                    <textarea class="form-control" id="restaurant-address" rows="3"></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="formFile" class="form-label">Restaurant logo</label>
+                                    <input class="form-control" type="file" id="restaurant-logo">
+                                </div>
+                                <div class="mb-3">
+                                    <img style="display: none;" class="slected-logo" width="100" height="100px" id="selected-logo" src=""
+                                        alt="">
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" id="close-btn" class="btn btn-secondary"
+                                    data-bs-dismiss="modal">Close</button>
+                                <button id="submit-restaurant" type="button" class="btn btn-primary d-flex justify-content-center align-items-center">
+                                    <div id="restaurant-spinner" style="margin-right: 5px;" class="spinner-border" role="status">
+                                        <span class="visually-hidden">Loading...</span>
+                                    </div>
+                                    Submit
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal for Editing Restaurant -->
+        <div class="modal fade" id="edit-restaurant-modal" tabindex="-1" aria-labelledby="editRestaurantModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="editRestaurantModalLabel">Edit Restaurant</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <div>
+                    <input type="hidden" id="restaurant-id">
+                    <div class="mb-3">
+                        <label for="exampleFormControlInput1" class="form-label">Restaurant name</label>
+                        <input type="text" class="form-control" id="edit-restaurant-name"
+                            placeholder="Enter name">
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleFormControlTextarea1" class="form-label">Restaurant
+                            address</label>
+                        <textarea class="form-control" id="edit-restaurant-address" rows="3"></textarea>
+                    </div>
+                   <div class="mb-3">
+                      <label for="restaurant-image" class="form-label">Restaurant Image</label>
+                      <input type="file" class="form-control" id="edit-restaurant-image">
+                      <img id="restaurant-image-preview" class="img-fluid mb-3" alt="Restaurant Image" width="200px"/>
+                    </div>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-primary" id="save-restaurant">Save changes</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+
+          
+        <!-- <div class="row px-2 py-4">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Restaurant image</th>
+                        <th scope="col">Restaurant name</th>
+                        <th scope="col">Address</th>
+                    </tr>
+                </thead>
+                <tbody id="res-list">
+                </tbody>
+            </table>
+        </div>
+    </div> -->
+
+    <div id="res-list"></div>
+
+
+
+    <script src="./js/restaurant.js" type="module"></script>
+    <script type="module" src="./app.js"></script>
+    <script src="./navbar.js"></script>
+</body>
+</html>

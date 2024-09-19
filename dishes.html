@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Check Out</title>
+    <link rel="shortcut icon" href="./images/favicon.png" type="image/x-icon">
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://kit.fontawesome.com/4876bfe495.js"
+      crossorigin="anonymous"
+    ></script>
+    <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="loader.css">
+    <link rel="stylesheet" href="navbar.css">
+    <link rel="stylesheet" href="cards.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+
+        .card-custom-margin {
+            margin: 10px;
+            border-radius: 30px;
+            box-shadow: 0 18px 40px rgba(0, 0, 0, 0.1) !important;
+            padding: 0px !important;
+        }
+    
+        #dish-img{
+            width: 100%;
+            border-radius: 12px 12px 0px 0px;
+            border-bottom: 1px solid #eaeaea;
+        }
+    
+        .card-title {
+            font-size: 18px;
+            font-weight: bold;
+        }
+    
+        .card-text {
+            font-size: 14px;
+            color: grey;
+            margin-bottom: 10px;
+        }
+    
+       .price {
+            font-size: 20px;
+            color: #007bff;
+            font-weight: bold;
+        }
+        .price span {
+            text-decoration: line-through;
+            color: #999 !important;
+            font-size: 14px;
+            margin-left: 10px;
+        }
+        /* .discount {
+            position: absolute;
+            top: 40px;
+            right: 10px;
+            background-color: #198fb9;
+            color: #fff;
+            padding: 5px;
+            border-radius: 5px;
+            font-size: 12px;
+        } */
+
+        /* VIP Styling for the dishModal */
+        #dishModal .modal-content {
+          background-color: #1e1e2e; /* Dark, luxurious background */
+          color: #f1f1f1; /* Light text for contrast */
+          border-radius: 15px; /* Smooth corners */
+          border: none; /* Remove default border */
+          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8); /* Premium shadow effect */
+        }
+
+        #dishModal .modal-header {
+          border-bottom: none; /* Remove default border line */
+          padding-bottom: 0;
+        }
+
+        #dishModal .modal-title {
+          font-family: 'Playfair Display', serif; /* Elegant font */
+          font-size: 1.8rem; /* Larger font for title */
+          color: #f9a825; /* Gold color for premium feel */
+        }
+
+        #dishModal .btn-close {
+          background-color: #198fb9; /* Gold close button */
+          border-radius: 50%; /* Circular shape */
+          padding: 5px 10px;
+          color: white !important;
+        }
+
+        #dishModal .btn-close:hover {
+          background-color: #157ea4; /* Darken on hover */
+        }
+
+        #dishModal .modal-body {
+          max-height: 60vh; /* Limit height for overflow scrolling */
+          overflow-y: auto; /* Enable scrolling */
+          padding: 20px;
+        }
+
+        #modal-dish-image {
+          border-radius: 10px; /* Rounded corners for the image */
+          margin-bottom: 15px; /* Spacing below the image */
+        }
+
+        #modal-dish-name {
+          font-family: 'Playfair Display', serif;
+          font-size: 1.6rem;
+          color: #ffde59; /* Slightly golden color */
+        }
+
+        #modal-dish-restaurant,
+        #modal-dish-serving,
+        #modal-dish-price,
+        #modal-dish-original-price {
+          font-size: 1.1rem;
+          margin-bottom: 8px; /* Space between paragraphs */
+        }
+
+        .qty-btn {
+          background-color: #198fb9; /* Gold button for quantity controls */
+          border: none;
+          border-radius: 5px;
+          padding: 8px;
+          color: #fff;
+        }
+
+        .qty-btn:hover {
+          background-color: #157ea4; /* Darken on hover */
+        }
+
+        #modal-dish-qty {
+          font-size: 1.3rem;
+          padding: 0 10px;
+        }
+
+        .modal-footer {
+          border-top: none; /* Remove footer border */
+          padding-top: 0;
+        }
+
+        #buy-now-btn {
+          background-color: #198fb9; /* Luxurious gold button */
+          border: none;
+          padding: 10px 20px;
+          font-size: 1.1rem;
+          border-radius: 8px;
+        }
+
+        #buy-now-btn:hover {
+          background-color: #157ea4; /* Darken on hover */
+        }
+
+        #dishModal .btn-secondary {
+          background-color: #6c757d; /* Secondary button styling */
+        }
+
+        #dishModal .btn-secondary:hover {
+          background-color: #5a6268; /* Darken secondary on hover */
+        }
+
+        /* Ensure modal content fits well on smaller screens */
+        @media (max-width: 576px) {
+          #dishModal .modal-dialog {
+            margin: 10px;
+          }
+
+          #dishModal .modal-body {
+            max-height: 50vh;
+          }
+        }
+
+          /* Import Modern Font */
+          @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
+          /* General Modal Styling for AddToCart */
+          #AddToCart .modal-content {
+            background-color: #ffffff;
+            border-radius: 8px;
+            border: none;
+            box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease-in-out;
+          }
+
+          /* Modal Header */
+          #AddToCart .modal-header {
+            background-color: #f8f9fa;
+            border-bottom: none;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+          }
+
+          #AddToCart .modal-title {
+            font-family: 'Roboto', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #333;
+          }
+
+          #AddToCart .btn-close {
+            background-color: transparent;
+            border: none;
+            font-size: 1.4rem;
+            color: #999;
+            transition: color 0.3s ease;
+          }
+
+          #AddToCart .btn-close:hover {
+            color: #000;
+          }
+
+          /* Modal Body Styling */
+          #AddToCart .modal-body {
+            padding: 20px;
+            font-family: 'Roboto', sans-serif;
+            color: #555;
+            font-size: 1rem;
+          }
+
+          /* Specific Styling for Add-To-Cart Card */
+          #AddToCart .card {
+            background-color: #f9f9f9;
+            border: none;
+            border-radius: 8px;
+            box-shadow: 10 16px 20px rgba(0, 0, 0, 0.1);
+            transition: box-shadow 0.3s ease;
+          }
+
+          #AddToCart .card-header {
+            background-color: #ffffff;
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #157ea4;
+            padding: 15px;
+            border-bottom: 1px solid #ddd;
+          }
+
+          #AddToCart .card-body {
+            padding: 20px;
+          }
+
+          /* Button Styling for Add-To-Cart Modal */
+          #AddToCart #checkoutButton {
+            background-color: #157ea4;
+            color: #ffffff;
+            font-family: 'Roboto', sans-serif;
+            font-weight: 500;
+            padding: 12px 24px;
+            border-radius: 6px;
+            border: none;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+          }
+
+          #AddToCart #checkoutButton:hover {
+            background-color: #198fb9;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+          }
+
+          /* General Modal Styling for exampleModal (CheckOut)*/
+          #exampleModal .modal-content {
+            background-color: #ffffff;
+            border-radius: 8px;
+            border: none;
+            box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease-in-out;
+          }
+
+          /* Modal Header */
+          #exampleModal .modal-header {
+            background-color: #f8f9fa;
+            border-bottom: none;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+          }
+
+          #exampleModal .modal-title {
+            font-family: 'Roboto', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #333;
+          }
+
+          #exampleModal .btn-close {
+            background-color: transparent;
+            border: none;
+            font-size: 1.4rem;
+            color: #999;
+            transition: color 0.3s ease;
+          }
+
+          #exampleModal .btn-close:hover {
+            color: #000;
+          }
+
+          /* Modal Body Styling */
+          #exampleModal .modal-body {
+            padding: 20px;
+            font-family: 'Roboto', sans-serif;
+            color: #555;
+            font-size: 1rem;
+          }
+
+          /* Specific Styling for Checkout Form */
+          #exampleModal #customerName,
+          #exampleModal #customerContact,
+          #exampleModal #customerAddress {
+            background-color: #f0f2f5;
+            border: 1px solid #ddd;
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+          }
+
+          #exampleModal #customerName:focus,
+          #exampleModal #customerContact:focus,
+          #exampleModal #customerAddress:focus {
+            border-color: #157ea4;
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+          }
+
+          #exampleModal #deliveryCharges, 
+          #exampleModal #totalAmount {
+            color: #157ea4;
+            font-weight: 600;
+          }
+
+          #exampleModal .d-flex span {
+            font-size: 1rem;
+            color: #555;
+          }
+
+          /* Button Styling for Checkout Modal */
+          #exampleModal #closeBtn {
+            background-color: #f1f1f1;
+            color: #333;
+            font-family: 'Roboto', sans-serif;
+            font-weight: 500;
+            padding: 12px 24px;
+            border-radius: 6px;
+            border: none;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+          }
+
+          #exampleModal #closeBtn:hover {
+            background-color: #e1e1e1;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+          }
+
+          #exampleModal #placeOrder {
+            background-color: #157ea4;
+            color: #ffffff;
+            font-family: 'Roboto', sans-serif;
+            font-weight: 500;
+            padding: 12px 24px;
+            border-radius: 6px;
+            border: none;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+          }
+
+          #exampleModal #placeOrder:hover {
+            background-color: #198fb9;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+          }
+
+          /* Modal Slide Animation */
+          .modal.fade .modal-dialog {
+            transform: translateY(-20px);
+            opacity: 0;
+            transition: all 0.4s ease;
+          }
+
+          .modal.show .modal-dialog {
+            transform: translateY(0);
+            opacity: 1;
+          }
+
+          /* Responsive Styling */
+          @media (max-width: 768px) {
+            .modal-dialog {
+              margin: 15px;
+            }
+
+            .modal-title {
+              font-size: 1.3rem;
+            }
+
+            .form-control {
+              padding: 10px;
+            }
+
+            #AddToCart #checkoutButton, 
+            #exampleModal #closeBtn,
+            #exampleModal #placeOrder {
+              font-size: 0.9rem;
+              padding: 10px 20px;
+            }
+          }
+
+          /* Container spacing */
+/* Card Container spacing */
+.col {
+  padding: 20px; /* Space between cards */
+}
+
+/* Card Styling */
+.card-custom-margin {
+  border: none;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 28px 46px rgba(0, 0, 0, 0.1), 0 112px 130px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease-in-out;
+  position: relative;
+  background: #ffffff;
+}
+
+.card-custom-margin:hover {
+  transform: translateY(-15px);
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.2), 0 20px 40px rgba(0, 0, 0, 0.2);
+}
+
+/* Header Styling */
+.post-header {
+  display: flex;
+  align-items: center;
+  padding: 20px;
+  background: #f5f5f5; /* Subtle light grey for a modern touch */
+  border-bottom: 1px solid #e0e0e0;
+  border-radius: 0 0 16px 16px; /* Rounded corners for header */
+}
+
+.post-profile-img {
+  border-radius: 50%;
+  width: 90px;
+  height: 90px;
+  object-fit: cover;
+  margin-right: 20px;
+  border: 4px solid #e0e0e0; /* Soft border around profile image */
+}
+
+.post-info {
+  flex-grow: 1;
+}
+
+.post-name {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 5px;
+}
+
+.post-time {
+  font-size: 1rem;
+  color: #888;
+}
+
+/* Card Image */
+.card-img-top {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  border-bottom: 1px solid #e0e0e0;
+  position: relative;
+}
+
+/* Card Body */
+.card-body {
+  padding: 20px;
+  background: #ffffff;
+}
+
+.card-color {
+  background: #fafafa; /* Light grey background for card body */
+}
+
+.card-title {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #222;
+  margin-bottom: 10px;
+}
+
+.card-text {
+  font-size: 1rem;
+  color: #666;
+  margin-bottom: 10px;
+}
+
+/* Discount Label */
+.discount {
+  display: inline-block;
+  background: linear-gradient(135deg, #0c5e79, #3E8DA8); /* Gradient background */
+  color: #fff;
+  padding: 10px 22px;
+  border-radius: 30px;
+  font-size: 1rem;
+  font-weight: 600;
+  position: absolute;
+  top: 20px;
+  left: 20px; /* Positioned to the left */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  z-index: 2; /* Ensure it is above other elements */
+}
+
+/* Restaurant Name */
+.restaurant-name {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 16px;
+  font-size: 1rem;
+  font-weight: 600;
+  z-index: 2; /* Ensure it is above other elements */
+}
+
+/* Button Styling */
+.btn-primary {
+  background: linear-gradient(135deg, #0c5e79, #3E8DA8); /* Gradient background */
+  border: none;
+  border-radius: 30px;
+  padding: 12px 28px;
+  color: #fff;
+  font-size: 1.2rem;
+  font-weight: 500;
+  transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, #3E8DA8, #0c5e79); /* Hover background */
+  transform: translateY(-3px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Utility Classes */
+.d-flex {
+  display: flex;
+}
+
+.gap-2 {
+  gap: 12px;
+}
+
+.w-100 {
+  width: 100%;
+}
+
+.justify-content-between {
+  justify-content: space-between;
+}
+
+
+    </style>
+  </head>
+
+  <body>
+    <div>
+      <nav>
+        <div class="navbar">
+          <i class='bx bx-menu'></i>
+          <div class="logo"><a href="#"><img style="padding: 0px 15px;" width="200" src="images/Foodiez logo 11.PNG" alt="" /></a></div>
+          <div class="nav-links">
+            <div class="sidebar-logo">
+              <span class="logo-name"><img width="150" src="images/Foodiez logo 11.PNG" alt="" />
+              </span>
+              <i class='bx bx-x' ></i>
+            </div>
+            <ul class="links">    
+              <div id="navbar-buttons" class="d-flex align-items-center">
+                <button id="logoutBtn" class="btn btn-primary px-3 py-2">Log Out</button>
+              </div>
+                <a style="margin: 0px 10px;" class="nav-link text-light" href="#">
+                  <span><i class="fas fa-users fa-lg"></i></span>
+                  <span class="badge rounded-pill badge-notification bg-danger">5</span>
+                </a>
+                <!-- <a class="nav-link text-light" href="./addtocart.html">
+                  <span><i class="fas fa-shopping-bag fa-lg"></i></span>
+                  <span class="cart-count badge rounded-pill badge-notification bg-danger">10</span>
+                </a> -->
+
+                <!-- Button trigger modal -->
+                <button type="button" class="nav-link text-light" data-bs-toggle="modal" data-bs-target="#AddToCart">
+                  <a class="nav-link text-light" href="#">
+                    <span><i class="fas fa-shopping-bag fa-lg"></i></span>
+                    <span class="cart-count badge rounded-pill badge-notification bg-danger">10</span>
+                  </a>
+                </button>
+
+                <ul class="navbar-nav flex-row"></ul>
+                    <li class="nav-item me-3 me-lg-1">
+                    <a class="nav-link d-sm-flex align-items-sm-center" href="#">
+                        <img
+                        src=""
+                        id="user-img"
+                        class="rounded-circle"
+                        alt=""
+                        loading="lazy"
+                        width="40px"
+                        />
+                        <strong class="d-none d-sm-block ms-1" id="user-name"></strong>
+                    </a>
+                    </li>
+          </div>
+          <div class="search-box d-flex justify-content-between">
+            <i class='bx bx-search'></i>
+            <div class="input-box">
+              <input type="text" placeholder="Search...">
+            </div>        
+          </div>
+        </div>
+      </nav>
+
+      <br><br><br><br>
+
+          <!-- Add-To-Cart Modal -->
+          <div class="modal fade" id="AddToCart" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-scrollable">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h1 class="modal-title fs-5" id="exampleModalLabel">Your Cart</h1>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <div class="cols-12 col-lg-12 col-md-12 col-sm-12 pt-5">
+                    <div class="card text-center">
+                      <div class="card-header text-bold font-weight-bold">
+                        <b>Cart</b>
+                      </div>
+                      <div id="cart" class="card-body"></div>
+                      <!-- Button to trigger the Checkout Modal -->
+                      <button
+                        type="button"
+                        class="btn btn-primary"
+                        id="checkoutButton"
+                      >
+                        Checkout
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- CheckOut Modal -->
+          <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h1 class="modal-title fs-5" id="exampleModalLabel">Checkout</h1>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-start">
+                  <div class="mb-3">
+                    <label for="customerName" class="form-label">Name</label>
+                    <input type="text" class="form-control" id="customerName" placeholder="Enter name" />
+                  </div>
+                  <div class="mb-3">
+                    <label for="customerContact" class="form-label">Contact number</label>
+                    <input type="number" class="form-control" id="customerContact" placeholder="Enter contact number" />
+                  </div>
+                  <div class="mb-3">
+                    <label for="customerAddress" class="form-label">Address</label>
+                    <textarea class="form-control" id="customerAddress" rows="3"></textarea>
+                  </div>
+                  <div class="d-flex justify-content-between">
+                    <span>Delivery charges:</span>
+                    <span class="fw-bold" id="deliveryCharges">Rs 100 /-</span>
+                  </div>
+                  <div class="d-flex justify-content-between">
+                    <span>Total amount:</span>
+                    <span class="fw-bold" id="totalAmount">Rs 343 /-</span>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button id="closeBtn" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  <button id="placeOrder" class="btn btn-primary">Place order</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Modal Script's -->
+
+          <script>
+              // JavaScript to handle modal switching
+              document.getElementById('checkoutButton').addEventListener('click', function () {
+                  // Hide the AddToCart modal
+                  var addToCartModalElement = document.getElementById('AddToCart');
+                  var addToCartModal = bootstrap.Modal.getInstance(addToCartModalElement);
+                  addToCartModal.hide();
+
+                  // Show the Checkout modal
+                  var checkoutModalElement = document.getElementById('exampleModal');
+                  var checkoutModal = new bootstrap.Modal(checkoutModalElement);
+                  checkoutModal.show();
+              });
+
+          </script>
+
+
+    <div id="page-spinner" class="container">
+        <div class="circular-progress">
+            <span class="progress-value">0%</span>
+        </div>
+    </div>
+
+      <div style="display: none" id="main-content">
+        <div class="row m-3">
+          <div class="cols-12 col-lg-12 col-md-8 col-sm-12">
+            <div class="card">
+              <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                  <div>
+                    <div class="mb-4">
+                      <img
+                        id="res-image"
+                        width="300px"
+                        src="https://www.xbytesolutions.com/assets/img/food-delivery-app/hero-screen.png"
+                        alt=""
+                      />
+                    </div>
+                    <h5 class="card-title" id="res-name">Saylani Foods</h5>
+                    <p class="card-text" id="res-address"></p>
+                    <div id="badges-container"></div>
+                  </div>
+                </div>
+                <div class="cols-12 col-lg-4 col-md-8 col-sm-12 d-flex m-5 gap-4 socail-icons">
+                  <i class="fa-brands fa-facebook"></i>
+                  <i class="fa-brands fa-instagram"></i>
+                  <i class="fa-brands fa-youtube"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Dish Details Modal -->
+          <!-- Modal -->
+          <div class="modal fade" id="dishModal" tabindex="-1" aria-labelledby="dishModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="dishModalLabel">Dish Details</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <img id="modal-dish-image" src="" class="img-fluid" alt="Dish Image">
+                  <h5 id="modal-dish-name">Dish Name</h5>
+                  <p id="modal-dish-restaurant">Restaurant: </p>
+                  <p id="modal-dish-serving">Serving: </p>
+                  <p id="modal-dish-description"></p>
+                  <p id="modal-dish-price">Price: </p>
+                  <p id="modal-dish-original-price">Original Price: </p>
+                  <div class="d-flex align-items-center gap-2">
+                    <button onclick="updateModalQty('-')" class="qty-btn"><i class="fa-solid fa-minus"></i></button>
+                    <span id="modal-dish-qty" class="fw-bold">1</span>
+                    <button onclick="updateModalQty('+')" class="qty-btn"><i class="fa-solid fa-plus"></i></button>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  <button type="button" id="buy-now-btn" class="btn btn-primary">Buy Now</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+
+        <div class="row px-2 py-4">
+          <div id="all-dishes" class="row row-cols-1 row-cols-md-3 g-4"></div>
+          <br><br>
+          <div class="cols-12 col-lg-4 col-md-8 col-sm-12 pt-5">
+            <div class="card text-center">
+              <div class="card-header text-bold font-weight-bold">
+                <b>Cart</b>
+              </div>
+              <div id="cart" class="card-body"></div>
+              <button
+                type="button"
+                class="btn btn-primary"
+                data-bs-toggle="modal"
+                data-bs-target="#exampleModal"
+              >
+                Checkout
+              </button>
+              <!-- Modal -->
+              <div
+                class="modal fade"
+                id="exampleModal"
+                tabindex="-1"
+                aria-labelledby="exampleModalLabel"
+                aria-hidden="true"
+              >
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h1 id="checkout-button" class="modal-title fs-5" id="exampleModalLabel">
+                        Checkout
+                      </h1>
+                      <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"
+                      ></button>
+                    </div>
+                    <div class="modal-body text-start">
+                      <div class="mb-3">
+                        <label for="exampleFormControlInput1" class="form-label"
+                          >Name</label
+                        >
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="customerName"
+                          placeholder="Enter name"
+                        />
+                      </div>
+                      <div class="mb-3">
+                        <label for="exampleFormControlInput1" class="form-label"
+                          >Contact number</label
+                        >
+                        <input
+                          type="number"
+                          class="form-control"
+                          id="customerContact"
+                          placeholder="Enter contact number"
+                        />
+                      </div>
+                      <div class="mb-3">
+                        <label for="exampleFormControlInput1" class="form-label"
+                          >Address</label
+                        >
+                        <textarea
+                          class="form-control"
+                          id="customerAddress"
+                          rows="3"
+                        ></textarea>
+                        <!-- <input type="text" id="address-input" placeholder="Enter your address"> -->
+                      </div>
+                      <div class="d-flex justify-content-between">
+                        <span>Delivery charges:</span>
+                        <span class="fw-bold" id="deliveryCharges">Rs 100 /-</span>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <span>Total amount:</span>
+                        <span class="fw-bold" id="totalAmount">Rs 343 /-</span>
+                    </div>
+                    
+                    </div>
+                    <div class="modal-footer">
+                      <button
+                        id="closeBtn"
+                        type="button"
+                        class="btn btn-secondary"
+                        data-bs-dismiss="modal"
+                      >
+                        Close
+                      </button>
+                      <button id="placeOrder" class="btn btn-primary">
+                        Place order
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="./js/dishes.js" type="module"></script>
+    <script src="./js/order.js" type="module"></script>
+    <script type="module" src="./app.js"></script>
+    <script src="./navbar.js"></script>
+  </body>
+</html>

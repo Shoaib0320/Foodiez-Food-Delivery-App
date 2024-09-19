@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cart</title>
+  <link rel="stylesheet" href="path/to/bootstrap.min.css">
+  <link rel="stylesheet" href="path/to/your-styles.css">
+</head>
+<body>
+  <div class="container">
+    <h1 class="my-4">Your Cart</h1>
+    <div id="cart-items" class="row">
+      <!-- Cart items will be dynamically inserted here -->
+    </div>
+    <div id="cart-summary" class="my-4">
+      <p><strong>Delivery Charges:</strong> <span id="cart-delivery-charges"></span></p>
+      <p><strong>Total Amount:</strong> <span id="cart-total-amount"></span></p>
+      <button id="checkout-btn" class="btn btn-primary">Proceed to Checkout</button>
+    </div>
+  </div>
+
+  <script src="."></script>
+  <script>
+    // Initialize the cart page
+    document.addEventListener('DOMContentLoaded', () => {
+      getCartItemsForPage();
+    });
+  </script>
+</body>
+</html>

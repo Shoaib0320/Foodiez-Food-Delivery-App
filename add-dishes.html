@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Dishes</title>
+    <link rel="shortcut icon" href="./images/favicon.png" type="image/x-icon">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/4876bfe495.js" crossorigin="anonymous"></script>
+    <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="navbar.css">
+    <link rel="stylesheet" href="cards.css">
+    <style>
+
+        .card-custom-margin {
+            margin: 10px;
+            border-radius: 30px;
+            box-shadow: 0 18px 40px rgba(0, 0, 0, 0.1) !important;
+            padding: 0px !important;
+        }
+
+
+        .dish-img {
+            width: 100%;
+            border-radius: 20px 20px 0px 0px;
+            border-bottom: 1px solid #eaeaea;
+        }
+        .card-title {
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .card-text {
+            font-size: 14px;
+            color: grey;
+            margin-bottom: 10px;
+        }
+        .price {
+            font-size: 20px;
+            color: #007bff;
+            font-weight: bold;
+        }
+
+        .price span {
+            text-decoration: line-through;
+            color: #999;
+            font-size: 14px;
+            margin-left: 10px;
+        }
+        .discount {
+            position: absolute;
+            top: 50px;
+            right: 10px;
+            background-color: #198fb9;
+            color: #fff;
+            padding: 5px;
+            border-radius: 5px;
+            font-size: 12px;
+        }
+
+        .edit-btn .delete-btn{
+            background-color: #198fb9 !important;
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+         <nav>
+            <div class="navbar">
+              <i class='bx bx-menu'></i>
+              <div class="logo"><a href="#">Foodiez</a></div>
+              <div class="nav-links">
+                <div class="sidebar-logo">
+                  <span class="logo-name">Foodiez</span>
+                  <i class='bx bx-x' ></i>
+                </div>
+                <ul class="links">
+                  <li><a aria-current="page" href="./dashboard.html">DashBoard</a></li>
+                  <li><a href="./restaurants.html">Restaurants</a></li>
+                  <li><a href="./add-dishes.html">Dishes</a></li>
+                  <li><a href="./orders.html">Orders</a></li>
+
+                  <div id="navbar-buttons" class="d-flex align-items-center">
+                    <button id="logoutBtn" class="btn btn-primary px-3 py-2">Log Out</button>
+                  </div>
+
+                    <ul class="navbar-nav flex-row"></ul>
+                        <li class="nav-item me-3 me-lg-1">
+                        <a class="nav-link d-sm-flex align-items-sm-center" href="#">
+                            <img
+                            src=""
+                            id="user-img"
+                            class="rounded-circle"
+                            alt=""
+                            loading="lazy"
+                            width="40px"
+                            />
+                            <strong class="d-none d-sm-block ms-1" id="user-name"></strong>
+                        </a>
+                        </li>
+              </div>
+              <div class="search-box d-flex justify-content-between">
+                <i class='bx bx-search'></i>
+                <div class="input-box">
+                  <input id="searchInput" type="text" placeholder="Search...">
+                </div>        
+              </div>
+            </div>
+          </nav>
+
+          <br>
+          <br>
+          <br><br>
+
+        <div class="row px-2 py-4 m-2">
+            <div class="d-flex justify-content-between align-items-center">
+                <h2>Dishes</h2>
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#Add-dish-modal">
+                    Add new dish <i class="fa-solid fa-plus"></i>
+                </button>
+        <!-- Add Dish Modal -->
+        <!-- Modal for editing dish -->
+
+        <div class="modal fade" id="Add-dish-modal"  tabindex="-1" aria-labelledby="exampleModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-scrollable">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="exampleModalLabel">Add New dish</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <input type="hidden" id="dish-id">
+                                <div class="mb-3">
+                                    <label for="exampleFormControlInput1" class="form-label">Restaurant name</label>
+                                    <select id="restaurant-name" class="form-select"
+                                        aria-label="Default select example">
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="exampleFormControlInput1" class="form-label">Dish name</label>
+                                    <input type="text" class="form-control" id="dish-name" placeholder="Dish name">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="exampleFormControlInput1" class="form-label">Dish Original price</label>
+                                    <input type="text" class="form-control" id="dish-original-price" placeholder="Dish price">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="exampleFormControlInput1" class="form-label">Dish Discounted price</label>
+                                    <input type="text" class="form-control" id="dish-price" placeholder="Dish price">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="exampleFormControlInput1" class="form-label">Dish serving</label>
+                                    <select id="dish-serving" class="form-select" aria-label="Default select example">
+                                        <option selected disabled>Select person</option>
+                                        <option value="1 person">1 person</option>
+                                        <option value="2 person">2 person</option>
+                                        <option value="3 person">3 person</option>
+                                        <option value="4 person">4 person</option>
+                                        <option value="5 person">5 person</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="formFile" class="form-label">Dish Description</label>
+                                    <textarea
+                                        class="form-control"
+                                        id="dish-description"
+                                        placeholder="Dish Description"
+                                        rows="3">
+                                    </textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="formFile" class="form-label">Dish image</label>
+                                    <input class="form-control" type="file" id="dish-image">
+                                </div>
+                                <div class="mb-3">
+                                    <img class="slected-logo" width="100" height="100px" id="selected-logo" src="" alt="">
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" id="close-btn" class="btn btn-secondary"
+                                    data-bs-dismiss="modal">Close</button>
+                                <button id="add-Dish" type="button" class="d-flex btn btn-primary">
+                                    <div id="dish-spinner" style="margin-right: 5px;" class="spinner-border" role="status">
+                                        <span class="visually-hidden">Loading...</span>
+                                    </div>
+                                    Submit
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-scrollable">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="exampleModalLabel">Update dish</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <input type="hidden" id="dish-id">
+                                <div class="mb-3">
+                                    <label for="exampleFormControlInput1" class="form-label">Restaurant name</label>
+                                    <select id="edit-restaurant-name" class="form-select"
+                                        aria-label="Default select example">
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="exampleFormControlInput1" class="form-label">Dish name</label>
+                                    <input type="text" class="form-control" id="edit-dish-name" placeholder="Dish name">
+                                </div>
+                                <div id="original-price-container" class="mb-3">
+                                    <label for="exampleFormControlInput1" class="form-label">Dish Original price</label>
+                                    <input type="text" class="form-control" id="edit-dish-original-price" placeholder="Dish price">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="exampleFormControlInput1" class="form-label">Dish Discounted price</label>
+                                    <input type="text" class="form-control" id="edit-dish-price" placeholder="Dish price">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="formFile" class="form-label">Dish Description</label>
+                                    <textarea
+                                        class="form-control"
+                                        id="edit-dish-description"
+                                        rows="3">
+                                    </textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="exampleFormControlInput1" class="form-label">Dish serving</label>
+                                    <select id="edit-dish-serving" class="form-select" aria-label="Default select example">
+                                        <option selected disabled>Select person</option>
+                                        <option value="1 person">1 person</option>
+                                        <option value="2 person">2 person</option>
+                                        <option value="3 person">3 person</option>
+                                        <option value="4 person">4 person</option>
+                                        <option value="5 person">5 person</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="formFile" class="form-label">Dish image</label>
+                                    <input class="form-control" type="file" id="edit-dish-image">
+                                </div>
+                                <div class="mb-3">
+                                    <!-- <img class="slected-logo" width="200" height="180px" id="edit-selected-logo" src=""
+                                        alt=""> -->
+                                    <img id="edit-selected-logo" src="" alt="Dish Image" style="display: none; width: 100px; height: 100px;">
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" id="close-btn" class="d-flex btn btn-secondary"
+                                    data-bs-dismiss="modal">Close</button>
+                                <button id="update-dish" type="button" class="btn btn-primary">
+                                     <div id="dish-spinner" style="margin-right: 5px;" class="spinner-border" role="status">
+                                        <span class="visually-hidden">Loading...</span>
+                                    </div>
+                                    Update Dish
+                                </button>  
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        
+
+
+        <div class="row px-2 py-4">
+            <table class="table">
+                <!-- <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Dish image</th>
+                        <th scope="col">Dish name</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Serving</th>
+                        <th scope="col">Restaurant</th>
+                    </tr>
+                </thead> -->
+                <tbody class="row" id="all-dishes">
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+
+    <script src="./js/add-dishes.js" type="module"></script>
+    <script type="module" src="./app.js"></script>
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <script src="./navbar.js"></script>
+</body>
+
+</html>
