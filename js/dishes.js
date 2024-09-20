@@ -8,6 +8,7 @@ import {
   query,
   doc,
   getDoc,
+  setDoc
 } from "./firebase.js";
 
 const urlParams = new URLSearchParams(window.location.search);
@@ -213,23 +214,6 @@ window.showDishModal = async (dishId) => {
       const myModal = new bootstrap.Modal(document.getElementById('dishModal'));
       myModal.show();
 
-      // Set Buy Now button action
-      // document.getElementById('buy-now-btn').onclick = () => {
-      //   addToCart(dishId);
-      //   myModal.hide(); // Close modal
-      //   getCartItems(); // Update cart display
-      //   updateTotalAmount(); // Update total amount
-      // };
-
-      // document.getElementById('buy-now-btn').onclick = () => {
-      //   const addToCartModal = new bootstrap.Modal(document.getElementById('AddToCart'));
-      //   addToCartModal.show(); // Open Add to Cart modal
-      //   document.getElementById('modal-dish-id').value = dishId; // Set dish ID in hidden input for reference
-      //   myModal.hide(); // Close the current modal
-      //   getCartItems(); // Update cart display
-      //   updateTotalAmount(); // Update total amount
-      // };
-
       document.getElementById('buy-now-btn').onclick = () => {
                 addToCart(dishId);
         // Close the current dish detail modal
@@ -378,13 +362,43 @@ const updateCartCount = () => {
   cartCountBadge.innerText = totalItems;
 };
 
-// Call this function wherever cart is modified, e.g., when adding or deleting items.
+// Save cart to Firestore for the current user
+const saveCartToFirestore = async (userId) => {
+  try {
+    await setDoc(doc(db, "carts", userId), { cart });
+    console.log("Cart saved to Firestore.");
+  } catch (error) {
+    console.error("Error saving cart to Firestore:", error);
+  }
+};
 
+// Fetch cart from Firestore for the current user
+const fetchCartFromFirestore = async (userId) => {
+  try {
+    const docRef = doc(db, "carts", userId);
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      cart = docSnap.data().cart || [];
+      saveCartToLocalStorage(); // Save the cart in local storage as well
+      getCartItems();
+      updateTotalAmount();
+      updateCartCount();
+      console.log("Cart fetched from Firestore.");
+    } else {
+      console.log("No cart found for this user.");
+      cart = [];
+      saveCartToLocalStorage();
+    }
+  } catch (error) {
+    console.error("Error fetching cart from Firestore:", error);
+  }
+};
 
 window.addToCart = (dishId) => {
   const qty = Number(document.getElementById('modal-dish-qty').innerText);
   const dishData = dishes.find(dish => dish.id === dishId);
-  if (dishData) {
+  const userId = auth.currentUser?.uid; // Get current logged-in user's ID
+  if (dishData && userId) {
     const existingItemIndex = cart.findIndex(item => item.id === dishId);
     if (existingItemIndex !== -1) {
       cart[existingItemIndex].qty += qty;
@@ -392,6 +406,7 @@ window.addToCart = (dishId) => {
       cart.push({ ...dishData, qty });
     }
     saveCartToLocalStorage();
+    saveCartToFirestore(userId); // Save cart to Firestore
     getCartItems();
     updateTotalAmount();
     updateCartCount(); // Update cart count after adding items
@@ -399,6 +414,27 @@ window.addToCart = (dishId) => {
     console.error(`Dish with ID ${dishId} not found in dishes array.`);
   }
 };
+
+
+// // Call this function wherever cart is modified, e.g., when adding or deleting items.
+// window.addToCart = (dishId) => {
+//   const qty = Number(document.getElementById('modal-dish-qty').innerText);
+//   const dishData = dishes.find(dish => dish.id === dishId);
+//   if (dishData) {
+//     const existingItemIndex = cart.findIndex(item => item.id === dishId);
+//     if (existingItemIndex !== -1) {
+//       cart[existingItemIndex].qty += qty;
+//     } else {
+//       cart.push({ ...dishData, qty });
+//     }
+//     saveCartToLocalStorage();
+//     getCartItems();
+//     updateTotalAmount();
+//     updateCartCount(); // Update cart count after adding items
+//   } else {
+//     console.error(`Dish with ID ${dishId} not found in dishes array.`);
+//   }
+// };
 
 
 window.deleteCartItem = (index) => {
@@ -413,6 +449,14 @@ window.deleteCartItem = (index) => {
   }
 };
 
+const clearCartOnLogout = () => {
+  cart = [];
+  localStorage.removeItem("cart");
+  getCartItems();
+  updateTotalAmount();
+  updateCartCount();
+};
+
 
 // Initialization
 const init = () => {
@@ -424,3 +468,13 @@ const init = () => {
 
 // Run initialization
 init();
+
+auth.onAuthStateChanged((user) => {
+  if (user) {
+    // User is logged in, fetch their cart
+    fetchCartFromFirestore(user.uid);
+  } else {
+    // User is logged out, clear cart
+    clearCartOnLogout();
+  }
+});

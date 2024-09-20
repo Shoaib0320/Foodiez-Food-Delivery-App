@@ -24,23 +24,119 @@
     <link rel="stylesheet" href="style.css" />
     <link rel="stylesheet" href="navbar.css">
     <style>
-        .card-custom-margin {
-          margin: 10px;
-          border-radius: 30px;
-          box-shadow: 0 18px 40px rgba(0, 0, 0, 0.1) !important;
-          padding: 0px !important;
-        }
+       .card-custom-margin {
+  margin: 10px;
+}
 
-      .card-body {
-        overflow: hidden; /* Hide overflow content */
-        text-overflow: ellipsis; /* Add ellipsis for overflowing text */
-        white-space: nowrap; /* Prevent text wrapping */
-      }
+.card {
+  background: linear-gradient(135deg, #f8f9fa, #e2e6ea);
+  border-radius: 15px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease-in-out;
+}
 
-      .card-body .card-text {
+.card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+}
+
+.card-body {
+  padding: 10px;
+}
+
+.card-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #333;
+  text-transform: uppercase;
+  margin-bottom: 15px;
+}
+
+.card-text {
+  font-size: 1rem;
+  color: #555;
+  margin-bottom: 10px;
+}
+
+.card-text strong {
+  font-weight: bold;
+  color: #222;
+}
+
+.text-primary {
+  cursor: pointer;
+}
+
+#more-${doc.id}, #close-${doc.id} {
+  font-size: 0.9rem;
+  color: #007bff;
+  cursor: pointer;
+}
+
+.card-text span {
+  font-weight: bold;
+  color: #555;
+}
+
+.status {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #fff;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+}
+
+.status-processing {
+  background-color: #ffc107;
+  color: white;
+}
+
+.status-completed {
+  background-color: #28a745;
+  color: white !important;
+
+}
+
+.status-canceled {
+  background-color: #dc3545;
+  color: white;
+}
+
+.d-flex {
+  display: flex;
+}
+
+.align-items-center {
+  align-items: center;
+}
+
+.justify-content-between {
+  justify-content: space-between;
+}
+
+.badge{
+  color: #e2e6ea !important;
+}
+
+
+        .card {
+  transition: all 0.3s ease; /* Smooth transition for expanding the card */
+  overflow: hidden; /* Hide overflow to ensure content doesn't spill out */
+}
+
+.card .card-body {
+  word-wrap: break-word; /* Break long words for proper wrapping */
+}
+
+.card-text span.text-primary {
+  cursor: pointer;
+}
+
+
+      /* .card-body .card-text {
         height: 20px; 
-        overflow: hidden;
-      }
+        /* overflow: hidden; 
+      } */
 
       .btn-primary {
         margin-top: 10px;
@@ -154,6 +250,19 @@
                 -1.8em -1.8em 0 0em black;
   }
 }
+
+.address-truncated {
+  display: inline;
+}
+
+.address-full {
+  display: none;
+}
+
+.btn-info {
+  margin-left: 5px;
+}
+
 
 
       

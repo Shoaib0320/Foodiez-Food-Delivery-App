@@ -208,7 +208,7 @@
 }
 
 .btn-primary {
-    background-color: #198fb9;
+    background: linear-gradient(135deg, #0c5e79, #3E8DA8); /* Gradient background */
     border-color: #198fb9;
     color: #fff;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
@@ -216,6 +216,8 @@
 }
 
 .btn-primary:hover {
+    background: linear-gradient(135deg,#3E8DA8, #0c5e79); /* Gradient background */
+
     background-color: #157ea4;
     border-color: #198fb9;
     color: #fff;
