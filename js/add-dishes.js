@@ -113,161 +113,6 @@ const handleDelete = async (event) => {
     }
 }
 
-
-// // Handle form submission for adding a dish
-// const addDish = document.getElementById("add-Dish");
-// if (addDish) {
-//     addDish.addEventListener('click', async () => {
-//         const name = document.getElementById("dish-name").value;
-//         const spinner = document.getElementById("dish-spinner");
-//         const price = document.getElementById("dish-price").value;
-//         const serving = document.getElementById("dish-serving").value;
-//         const restaurant = document.getElementById("restaurant-name").value;
-//         const description = document.getElementById("dish-description").value; // Get description
-//         const imageFile = document.getElementById("dish-image").files[0];
-//         let imageUrl = '';
-
-//         spinner.style.display = "flex";
-
-//         if (imageFile) {
-//             imageUrl = await uploadFile(imageFile, name);
-//         }
-
-//         // Calculate discount percentage
-//         const originalPrice = parseFloat(document.getElementById("dish-original-price").value);
-//         const priceValue = parseFloat(document.getElementById("dish-price").value);
-//         const discountPercentage = originalPrice ? ((originalPrice - priceValue) / originalPrice) * 100 : 0;
-
-//         // Get the current timestamp
-//         const createdAt = new Date();
-
-//         const dishDetail = {
-//             name,
-//             price,
-//             serving,
-//             restaurant,
-//             description, // Add description here
-//             image: imageUrl,
-//             discount: discountPercentage.toFixed(2), // Store discount percentage with 2 decimal places
-//             createdAt: createdAt // Add the timestamp here
-//         };
-
-//         // Store the dish data along with the timestamp in Firebase
-//         const docRef = await addDoc(collection(db, "dishes"), dishDetail);
-//         console.log("Dish Added with ID: ", docRef.id);
-//         spinner.style.display = "none";
-
-//         // Close the modal and refresh the dish list
-//         document.getElementById('close-btn').click();
-//         getAllDishes(); // Refresh the list
-//     });
-// }
-
-// const getAllDishes = async () => {
-//     const allDishesContainer = document.getElementById("all-dishes");
-//     if (allDishesContainer) {
-//         const q = collection(db, "dishes");
-//         const querySnapshot = await getDocs(q);
-        
-//         // Fetch all restaurants and create a map of restaurant ID to details
-//         const restaurantMap = await getRestaurantMap();
-        
-//         allDishesContainer.innerHTML = '';
-        
-//         querySnapshot.forEach((doc) => {
-//             const data = doc.data();
-            
-//             // Determine discountText based on presence of discount and price
-//             let discountText = '';
-//             if (data.discount && data.price) {
-//                 discountText = `${data.discount}% OFF`;
-//             }
-
-//             // Check for original price and discounted price
-//             let priceHTML = '';
-//             if (data.originalPrice) {
-//                 priceHTML = data.price ? 
-//                     `<p class="price">Rs. ${data.price} <span>Rs. ${data.originalPrice}</span></p>` :
-//                     `<p class="price">Rs. ${data.originalPrice}</p>`;
-//             } else if (data.price) {
-//                 priceHTML = `<p class="price">Rs. ${data.price}</p>`;
-//             }
-
-//             // Get the restaurant details (name and image) from the map
-//             const restaurantDetails = restaurantMap[data.restaurant] || { name: 'Unknown Restaurant', image: 'default-image-url' };
-
-//             // Description logic
-//             const maxLength = 100; // Limit description to 100 characters
-//             let fullDescription = data.description || 'No description available';
-//             let shortDescription = fullDescription.length > maxLength ? fullDescription.slice(0, maxLength) + '...' : fullDescription;
-            
-//             allDishesContainer.innerHTML += `
-//                 <div class="col-lg-4 col-md-4 col-sm-6 col-12">
-//                     <div class="card card-custom-margin">
-//                         ${discountText ? `<span class="discount">${discountText}</span>` : ''}
-//                         <div class="post-header">
-//                             <img class="post-profile-img" src="${restaurantDetails.image}" alt="Restaurant Image">
-//                             <div class="post-info">
-//                                 <h5 class="post-name">Restaurant: ${restaurantDetails.name}</h5>
-//                                 <p class="post-time">Posted: ${data.createdAt ? new Date(data.createdAt.seconds * 1000).toLocaleString() : 'Unknown'}</p>
-//                             </div>
-//                         </div>
-//                         <img id="dish-img" src="${data.image}" class="card-img-top" alt="${data.name}">
-//                         <div class="card-body card-color text-center">
-//                             <h5 class="card-title">Name: ${data.name}</h5>
-//                             <p class="card-text">Serving: ${data.serving}</p>
-//                             <p class="card-text"><strong>Description:</strong> 
-//                                 <span class="short-description">${shortDescription}</span>
-//                                 <span class="full-description d-none">${fullDescription}</span>
-//                                 ${fullDescription.length > maxLength ? `<button class="btn btn-link read-more-btn">Read more</button>` : ''}
-//                             </p>
-//                             <p class="card-text"><strong>Restaurant:</strong> ${restaurantDetails.name}</p>
-//                             ${priceHTML}
-//                             ${data.createdAt ? `<p class="card-text"><strong>Created At:</strong> ${new Date(data.createdAt.seconds * 1000).toLocaleString()}</p>` : ''}
-//                             <button type="button" class="btn btn-info btn-sm edit-btn" data-id="${doc.id}" data-bs-toggle="modal" data-bs-target="#exampleModal">
-//                                 <i class="fa-solid fa-pen-to-square"></i>
-//                             </button>
-//                             <button class="btn btn-danger btn-sm delete-btn" data-id="${doc.id}">
-//                                 <i class="fa-solid fa-trash"></i>
-//                             </button>
-//                         </div>
-//                     </div>
-//                 </div>
-//             `;
-//         });
-
-//         // Add event listeners for the "Read more" buttons
-//         document.querySelectorAll('.read-more-btn').forEach(btn => {
-//             btn.addEventListener('click', (event) => {
-//                 const cardBody = event.target.closest('.card-body');
-//                 const shortDesc = cardBody.querySelector('.short-description');
-//                 const fullDesc = cardBody.querySelector('.full-description');
-
-//                 if (fullDesc.classList.contains('d-none')) {
-//                     // Show full description
-//                     fullDesc.classList.remove('d-none');
-//                     shortDesc.classList.add('d-none');
-//                     event.target.textContent = 'See less';
-//                 } else {
-//                     // Show short description
-//                     fullDesc.classList.add('d-none');
-//                     shortDesc.classList.remove('d-none');
-//                     event.target.textContent = 'Read more';
-//                 }
-//             });
-//         });
-
-//         // Add event listeners for edit and delete buttons
-//         document.querySelectorAll('.edit-btn').forEach(btn => {
-//             btn.addEventListener('click', handleEdit);
-//         });
-        
-//         document.querySelectorAll('.delete-btn').forEach(btn => {
-//             btn.addEventListener('click', handleDelete);
-//         });
-//     }
-// };
-
 // Handle form submission for adding a dish
 const addDish = document.getElementById("add-Dish");
 if (addDish) {
@@ -549,11 +394,6 @@ const filterDishes = async (searchTerm) => {
                 dishDescriptionLower.includes(searchLower) ||
                 restaurantNameLower.includes(searchLower)
             ) {
-                // If match is found, display the dish
-                // let discountText = '';
-                // if (data.discount && data.price) {
-                //     discountText = `${data.discount}% OFF`;
-                // }
 
                 let discountText = '';
                     if (data.discount && data.price && data.discount > 0) {
@@ -630,3 +470,9 @@ window.onload = async () => {
     await getAllRestaurants();
     await getAllDishes();
 }
+
+
+let updateDishCloseBtn = document.getElementById("update-dish-close-btn")
+updateDishCloseBtn.addEventListener('click',()=>{
+    window.location.reload()
+})
